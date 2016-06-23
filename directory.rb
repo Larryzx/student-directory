@@ -4,13 +4,17 @@ def print_header
   puts "-------------"
 end 
 def print(students)
-  students.each.with_index do |student, idx|
-    puts ("#{idx +1} #{student[:name]} (#{student[:cohort]} cohort)")     
+   counter = 0
+    student_count = students.count
+   while counter <= student_count -1
+    student = students[counter]
+    puts student[:name] +" " +"(" + student[:cohort].to_s + " cohort)"
+    counter = counter + 1
   end
 end
 def print_footer(names)
    puts "Overall, we have #{names.count} great students"
-end  
+end 
 def input_students
   puts "Please enter the names of the students "
   puts "To finish just hit return twice"
@@ -84,8 +88,8 @@ def undertwelve(students)
 end  
 students = input_students
 print_header
-#print(students)
+print(students)
 print_footer(students)
 #print_beginwith(students)
-undertwelve(students)
+#undertwelve(students)
 
