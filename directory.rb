@@ -57,9 +57,35 @@ def print_beginwith (students)
   puts"students that match are listed below:"
   print(name_list)
 end  
+def undertwelve(students)
+  puts "This prints outs students names who are less than twelve characters long"
+  # make a copy of students so as not to alter it
+  copy_students = students
+  # make a blank list so we can add items to it
+  list = []
+  #go through each studen count the characters in their name
+  # if there is less than twelve add there name to lis[]
+  copy_students.each do |student|
+    name = student[:name]
+    cohort = student[:cohort]
+    name_length = name.length
+    string_pos = 0
+    while string_pos <= name_length -1 #eliminate spaces 
+     if name[string_pos] == ' '
+       name_length -= 1   
+     end
+     string_pos +=1
+    end
+    if name_length <12
+      list << {name: name, cohort: cohort}
+    end  
+  end 
+  print(list)
+end  
 students = input_students
 print_header
-print(students)
+#print(students)
 print_footer(students)
-print_beginwith(students)
+#print_beginwith(students)
+undertwelve(students)
 
