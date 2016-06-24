@@ -1,25 +1,36 @@
 students = []
 def print_header 
-  puts"The students of the Villians Academdy"
-  puts "-------------"
+   line_width = 120
+   academy_string ="The students of the Villians Academdy"
+   separator= "-------------"
+   puts academy_string.center(line_width)
+   puts separator.center(line_width)
 end 
 def print(students)
-   counter = 0
+    #line_width = 40
+    counter = 0
     student_count = students.count
    while counter <= student_count -1
     student = students[counter]
-    puts (counter+1).to_s + student[:name] +" " +"(" + student[:cohort].to_s + " cohort)"
+    output_name = student[:name]
+    output_cohort = student[:cohort]
+    space =' '
+    #puts (counter+1).to_s + student[:name] +" " +"(" + student[:cohort].to_s + " cohort)" too bitty
+    output_string = "#{space*8}#{counter+1} #{output_name} #{output_cohort}"
+    puts output_string
     counter = counter + 1
-  end
+   end
 end
 def print_footer(names)
-   puts "Overall, we have #{names.count} great students"
+  line_width = 120
+  footer_string ="Overall, we have #{names.count} great students"
+  puts footer_string.center(line_width)
 end 
 def input_students
   puts "Enter student details at each prompt: "
   puts "If you have finished entering last student just hit enter at name prompt"
   #create and empty array to store data
-  students = []
+  students =[]
   while true
     puts "Students Name:"
     name = gets.chomp
