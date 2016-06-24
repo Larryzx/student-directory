@@ -27,6 +27,7 @@ def print_footer(names)
   puts footer_string.center(line_width)
 end 
 def input_students
+  # default value for keys that are not set is nil
   puts "Enter student details at each prompt: "
   puts "If you have finished entering last student just hit enter at name prompt"
   #create and empty array to store data
@@ -46,9 +47,13 @@ def input_students
       cohort = '0'.to_sym
     else
       cohort = cohort.to_sym
+    end 
+    sex =''
+    while !(sex == "male" || sex =="female")
+      puts"Sex (male/female)"
+      sex = gets.chomp
+      sex = sex.downcase!
     end  
-    puts"Sex (male/female)"
-    sex = gets.chomp.downcase!
     puts "Country of birth"
     country_birth =gets.chomp
     # add the student hash to the array including additional stuff
