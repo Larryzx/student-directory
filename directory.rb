@@ -37,12 +37,25 @@ def input_students
     if name.empty? 
       break # terminate loop
     end 
+    puts"Students Cohort:"
+    cohort = gets.chomp
+    # check for a value if not supply a default
+    #convert string for cohort entered to a symbol
+    if cohort.empty?
+      #supply suitable default ?
+      cohort = '0'.to_sym
+    else
+      cohort = cohort.to_sym
+    end  
     puts"Sex (male/female)"
     sex = gets.chomp.downcase!
     puts "Country of birth"
     country_birth =gets.chomp
     # add the student hash to the array including additional stuff
-    students << {name: name, gender: sex, birth_place: country_birth, cohort: :november}
+    if name == ''
+      name ='0'# usassigned value so set to zero
+    end  
+    students << {name: name, gender: sex, birth_place: country_birth, cohort: cohort}
     puts "Now we have #{students.count} students"
      # get another name from the user
   end
