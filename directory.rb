@@ -8,7 +8,7 @@ def print(students)
     student_count = students.count
    while counter <= student_count -1
     student = students[counter]
-    puts student[:name] +" " +"(" + student[:cohort].to_s + " cohort)"
+    puts (counter+1).to_s + student[:name] +" " +"(" + student[:cohort].to_s + " cohort)"
     counter = counter + 1
   end
 end
@@ -16,19 +16,24 @@ def print_footer(names)
    puts "Overall, we have #{names.count} great students"
 end 
 def input_students
-  puts "Please enter the names of the students "
-  puts "To finish just hit return twice"
+  puts "Enter student details at each prompt: "
+  puts "If you have finished entering last student just hit enter at name prompt"
   #create and empty array to store data
   students = []
-  #get this first name
-  name =gets.chomp 
-  # while the name is not empty, repeat this code
-  while !name.empty? do
-    # add the student hash to the array
-    students << {name: name, cohort: :november}
+  while true
+    puts "Students Name:"
+    name = gets.chomp
+    if name.empty? 
+      break # terminate loop
+    end 
+    puts"Sex (male/female)"
+    sex = gets.chomp.downcase!
+    puts "Country of birth"
+    country_birth =gets.chomp
+    # add the student hash to the array including additional stuff
+    students << {name: name, gender: sex, birth_place: country_birth, cohort: :november}
     puts "Now we have #{students.count} students"
      # get another name from the user
-     name =gets.chomp
   end
   #return the array of students
   students
