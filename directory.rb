@@ -8,6 +8,7 @@ def print_header
 end 
 def print(students)
     #line_width = 40
+    students = students_by_cohorts(students)
     counter = 0
     student_count = students.count
    while counter <= student_count -1
@@ -52,7 +53,6 @@ def input_students
     while !(sex == "male" || sex =="female")
       puts"Sex (male/female)"
       sex = gets.chomp
-      sex = sex.downcase!
     end  
     puts "Country of birth"
     country_birth =gets.chomp
@@ -120,10 +120,42 @@ def undertwelve(students)
   end 
   print(list)
 end  
+def students_by_cohorts(students)
+  #genearate a list of cohorts put into an array called cohorts
+  cohorts = []
+  cohort_list = []
+  # may need to remove dupicate cohorts and sort the array into order
+  #make a copy of students not to alter it
+  students_copy = students
+  students_copy.each do |student|
+     cohorts << student[:cohort]
+  end
+  temp = cohorts
+  temp.uniq! #make it array unique
+  temp.sort! # sort into order
+  cohorts = temp
+  #Now using the cohorts array cycle through it
+  #one by one and for each cohort find students print them out
+  cohorts.each do |cohort|
+    students_copy.each do |student|
+    if student[:cohort]  == cohort
+      name = student[:name]  
+      month = student[:cohort]
+      sex= student[:gender]
+      country_birth = student[:birth_place]
+      cohort_list << {name: name, cohort: month, gender: sex, birth_place: country_birth}
+      #{name: name, gender: sex, birth_place: country_birth, cohort: cohort}
+    end  
+    end   
+  end 
+  cohort_list
+end 
+  
 students = input_students
 print_header
 print(students)
 print_footer(students)
+#students_by_cohorts(students)
 #print_beginwith(students)
 #undertwelve(students)
 
