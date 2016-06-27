@@ -70,7 +70,12 @@ def input_students
       name ='0'# usassigned value so set to zero
     end  
     students << {name: name, gender: sex, birth_place: country_birth, cohort: cohort}
-    puts "Now we have #{students.count} students"
+    num_students = students.count
+    if num_students > 1
+      puts "Now we have #{students.count} students"
+    else
+      puts "Now we have #{students.count} student"   
+    end
      # get another name from the user
   end
   #return the array of students
@@ -159,11 +164,37 @@ def students_by_cohorts(students)
   end 
   cohort_list
 end 
-  
-students = input_students
-print_header
+#interactive_menu puts up the choices and controls the program so 
+#no need to call input_students etc.. 
+def interactive_menu
+  students = []
+  loop do
+    # 1. print the menu and ask the user what to do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit" # 9 because we'll be adding more items
+    # 2. read the input and save it into a variable
+    selection = gets.chomp
+    # 3. do what the user has asked
+    case selection
+    when "1"
+      students = input_students
+    when "2"
+      print_header
+      print(students)
+      print_footer(students)
+    when "9"
+      exit # this will cause the program to terminate
+    else
+      puts "I don't know what you meant, try again"
+    end
+  end
+end
+ interactive_menu
+#students = input_students
+#print_header
 print(students)
-print_footer(students)
+#print_footer(students)
 #students_by_cohorts(students)
 #print_beginwith(students)
 #undertwelve(students)
