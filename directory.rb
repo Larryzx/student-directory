@@ -9,6 +9,10 @@ end
 def print(students)
     #line_width = 40
     students = students_by_cohorts(students)
+    if students == []
+      puts "No students were added"
+      return false
+    end  
     counter = 0
     student_count = students.count
    while counter <= student_count -1
@@ -39,7 +43,7 @@ def input_students
   students =[]
   while true
     puts "Students Name:"
-    name = gets.chomp
+    name = gets.delete("\n\r") #replaced chomp method here with delete
     if name.empty? 
       break # terminate loop
     end 
