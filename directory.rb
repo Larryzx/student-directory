@@ -1,4 +1,4 @@
-students = []
+@students = [] # an empty array accessible to all methods
 def print_header 
    line_width = 120
    academy_string ="The students of the Villians Academdy"
@@ -6,17 +6,18 @@ def print_header
    puts academy_string.center(line_width)
    puts separator.center(line_width)
 end 
-def print(students)
+def print_students_list
     #line_width = 40
-    students = students_by_cohorts(students)
-    if students == []
+    students_by_cohorts
+    if @students == []
       puts "No students were added"
-      return false
+      interactive_menu
     end  
     counter = 0
-    student_count = students.count
+    student_count = @students.count
+   # puts student_count
    while counter <= student_count -1
-    student = students[counter]
+    student = @students[counter]
     output_name = student[:name]
     output_cohort = student[:cohort]
     space =' '
@@ -26,7 +27,8 @@ def print(students)
     counter = counter + 1
    end
 end
-def print_footer(names)
+def print_footer 
+  names = @students
   line_width = 120
   if names.count > 1
     footer_string ="Overall, we have #{names.count} great students"
@@ -40,7 +42,7 @@ def input_students
   puts "Enter student details at each prompt: "
   puts "If you have finished entering last student just hit enter at name prompt"
   #create and empty array to store data
-  students =[]
+  # @students =[] not required
   while true
     puts "Students Name:"
     name = gets.delete("\n\r") #replaced chomp method here with delete
@@ -69,17 +71,17 @@ def input_students
     if name == ''
       name ='0'# usassigned value so set to zero
     end  
-    students << {name: name, gender: sex, birth_place: country_birth, cohort: cohort}
-    num_students = students.count
+    @students << {name: name, gender: sex, birth_place: country_birth, cohort: cohort}
+    num_students = @students.count
     if num_students > 1
-      puts "Now we have #{students.count} students"
+      puts "Now we have #{@students.count} students"
     else
-      puts "Now we have #{students.count} student"   
+      puts "Now we have #{@students.count} student"   
     end
      # get another name from the user
   end
-  #return the array of students
-  students
+  #no need to return students as we use global @students 
+  #which is updated here by referencing it directly
 end 
 def print_beginwith (students)
   # create a cop of students array not to affect it
@@ -134,13 +136,13 @@ def undertwelve(students)
   end 
   print(list)
 end  
-def students_by_cohorts(students)
+def students_by_cohorts
   #genearate a list of cohorts put into an array called cohorts
   cohorts = []
   cohort_list = []
   # may need to remove dupicate cohorts and sort the array into order
   #make a copy of students not to alter it
-  students_copy = students
+  students_copy = @students
   students_copy.each do |student|
      cohorts << student[:cohort]
   end
@@ -162,32 +164,37 @@ def students_by_cohorts(students)
     end  
     end   
   end 
-  cohort_list
+  @students = cohort_list #no return here required
 end 
 #interactive_menu puts up the choices and controls the program so 
 #no need to call input_students etc.. 
 def interactive_menu
-  students = []
   loop do
-    # 1. print the menu and ask the user what to do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit" # 9 because we'll be adding more items
-    # 2. read the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit" # 9 because we'll be adding more items  
+end
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+def process(selection)
+  case selection
     when "1"
-      students = input_students
+      input_students
     when "2"
-      print_header
-      print(students)
-      print_footer(students)
+      show_students
     when "9"
-      exit # this will cause the program to terminate
+      exit
     else
-      puts "I don't know what you meant, try again"
-    end
+      puts "I don't know what you mean, try again"
   end
 end
  interactive_menu
