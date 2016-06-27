@@ -24,7 +24,11 @@ def print(students)
 end
 def print_footer(names)
   line_width = 120
-  footer_string ="Overall, we have #{names.count} great students"
+  if names.count > 1
+    footer_string ="Overall, we have #{names.count} great students"
+  else  
+     footer_string ="Overall, we have #{names.count} great student"
+  end
   puts footer_string.center(line_width)
 end 
 def input_students
@@ -41,6 +45,7 @@ def input_students
     end 
     puts"Students Cohort:"
     cohort = gets.chomp
+    cohort = cohort.downcase
     # check for a value if not supply a default
     #convert string for cohort entered to a symbol
     if cohort.empty?
