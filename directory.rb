@@ -37,6 +37,14 @@ def print_footer
   end
   puts footer_string.center(line_width)
 end 
+def student_tally
+   num_students = @students.count
+    if num_students > 1
+      puts "Now we have #{@students.count} students"
+    else
+      puts "Now we have #{@students.count} student"   
+    end
+end  
 def input_students
   # default value for keys that are not set is nil
   puts "Enter student details at each prompt: "
@@ -72,13 +80,8 @@ def input_students
       name ='0'# usassigned value so set to zero
     end  
     @students << {name: name, gender: sex, birth_place: country_birth, cohort: cohort}
-    num_students = @students.count
-    if num_students > 1
-      puts "Now we have #{@students.count} students"
-    else
-      puts "Now we have #{@students.count} student"   
-    end
-     # get another name from the user
+    #call student tally instead
+    student_tally
   end
   #no need to return students as we use global @students 
   #which is updated here by referencing it directly
