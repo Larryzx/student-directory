@@ -1,4 +1,5 @@
 @students = [] # an empty array accessible to all methods
+@success = false
 def print_header 
    line_width = 120
    academy_string ="The students of the Villians Academdy"
@@ -83,8 +84,7 @@ def input_students
     #call student tally instead
     student_tally
   end
-  #no need to return students as we use global @students 
-  #which is updated here by referencing it directly
+  @success = true
 end 
 def print_beginwith (students)
   # create a cop of students array not to affect it
@@ -171,7 +171,23 @@ def students_by_cohorts
 end 
 #interactive_menu puts up the choices and controls the program so 
 #no need to call input_students etc.. 
+def user_feedback(call_result)
+  if @success
+    case call_result
+      when 'input'
+        puts 'input successful'
+      when 'show'  
+        puts'Show successful'
+      when 'save'    
+        puts'save successful'  
+      when 'load'
+        puts "Load successful"
+    end  
+  end 
+  @success = false
+end  
 def interactive_menu
+  @success = false
   loop do
     print_menu
     process(STDIN.gets.chomp)
@@ -181,7 +197,7 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3.Save the list to students.csv"
+  puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
   puts "9. Exit" # 9 because we'll be adding more items  
 end
@@ -189,17 +205,27 @@ def show_students
   print_header
   print_students_list
   print_footer
+  @success = true
 end
 def process(selection)
+   msg = ''
   case selection
     when "1"
       input_students
+      msg = 'input'
+      user_feedback(msg)
     when "2"
       show_students
+      msg = 'show'
+      user_feedback(msg)
     when "3"  
       save_students
+      msg = 'save'
+      user_feedback(msg)
     when "4"
       load_students
+      msg = 'load'
+      user_feedback(msg) 
     when "9"
       exit
     else
@@ -216,6 +242,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  @success = true
 end
 def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
@@ -224,6 +251,7 @@ def load_students(filename = "students.csv")
     @students << {name: name, cohort: cohort.to_sym, gender: gender, birth_place: birth_place}
   end
   file.close
+  @success = true
 end
 def try_load_students
   filename = ARGV.first # first argument from the command line
