@@ -45,12 +45,12 @@ def input_students
   # @students =[] not required
   while true
     puts "Students Name:"
-    name = gets.delete("\n\r") #replaced chomp method here with delete
+    name = STDIN.gets.chomp
     if name.empty? 
       break # terminate loop
     end 
     puts"Students Cohort:"
-    cohort = gets.chomp
+    cohort = STDIN.gets.chomp
     cohort = cohort.downcase
     # check for a value if not supply a default
     #convert string for cohort entered to a symbol
@@ -63,10 +63,10 @@ def input_students
     sex =''
     while !(sex == "male" || sex =="female")
       puts"Sex (male/female)"
-      sex = gets.chomp
+      sex = STDIN.gets.chomp
     end  
     puts "Country of birth"
-    country_birth =gets.chomp
+    country_birth = STDIN.gets.chomp
     # add the student hash to the array including additional stuff
     if name == ''
       name ='0'# usassigned value so set to zero
@@ -171,7 +171,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -214,7 +214,7 @@ def save_students
   end
   file.close
 end
-def load_students
+def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
   name, cohort, gender,birth_place = line.chomp.split(',')
@@ -222,6 +222,18 @@ def load_students
   end
   file.close
 end
+def try_load_students
+  filename = ARGV.first# first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+     puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
+end
+ try_load_students
  interactive_menu
 #students = input_students
 #print_header
