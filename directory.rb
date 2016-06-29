@@ -197,8 +197,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a file"
+  puts "4. Load the list from a file"
   puts "9. Exit" # 9 because we'll be adding more items  
 end
 def show_students
@@ -265,23 +265,48 @@ def save_students
   end
 end
 def load_students(filename = "students.csv")
-  file = File.open("students.csv", "r")
+  puts "Enter a file to open"
+  non_default = STDIN.gets.chomp
+  #non_default = non_default+'.csv'
+  file_there = file_exists(non_default)
+  stud_file  = file_exists(filename)
+  if (file_there == false) 
+    puts "File does not exist in default location to try another choose option 4 again"
+    @success = false
+    return
+   else # file exist and can be opened
+    file = File.open(non_default, "r")
+    file.readlines.each do |line|
+      name, cohort, gender,birth_place = line.chomp.split(',')
+      @students << {name: name, cohort: cohort.to_sym, gender: gender, birth_place: birth_place}
+    end
+    file.close
+    @success = true
+  end  
+end
+def load_students_default(filename = "students.csv")
+  stud_file  = file_exists(filename)
+  if stud_file == false
+    puts"default load failed"
+    exit
+  end  
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort, gender,birth_place = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym, gender: gender, birth_place: birth_place}
+    name, cohort = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
-  @success = true
 end
+
 def try_load_students
   filename = ARGV.first # first argument from the command line
   temp = ARGV[0]
   if temp == nil #load default file
-    load_students
+    load_students_default
   end  
    return if filename.nil? # get out of the method if it isn't given
   if File.exists?(filename) # if it exists
-    load_students(filename)
+    load_students_default (filename)
      puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
