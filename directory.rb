@@ -231,18 +231,38 @@ def process(selection)
     else
       puts "I don't know what you mean, try again"
   end
-end
+end  
+def file_exists (file) 
+   if File.exists?(file)
+     return true
+   else
+    return false   
+   end
+end  
+
 def save_students
   # open the file for 
-  file = File.open("students.csv", "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort],student[:gender], student[:birth_place]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  puts 'Enter a name for a file to sava your students:'
+  filename = STDIN.gets.chomp
+  file_there = file_exists(filename +'.csv')
+  response = ''
+  if file_there
+    while !(response == 'y' || response == 'n')
+      puts "file exists do you wish to overwrite it(y/n)"
+      response = STDIN.gets.chomp
+    end 
+  end  
+  if (file_there == false) || (response == 'y') #file does not exist or user wants to write over it
+    file = File.open(filename +'.csv', "w")
+    # iterate over the array of students
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort],student[:gender], student[:birth_place]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
+    file.close
+    @success = true
   end
-  file.close
-  @success = true
 end
 def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
