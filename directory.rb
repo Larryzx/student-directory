@@ -1,5 +1,6 @@
 @students = [] # an empty array accessible to all methods
 @success = false
+require 'csv'
 def print_header 
    line_width = 120
    academy_string ="The students of the Villians Academdy"
@@ -253,16 +254,15 @@ def save_students
     end 
   end  
   if (file_there == false) || (response == 'y') #file does not exist or user wants to write over it
-    file = File.open(filename +'.csv', "w")
-    # iterate over the array of students
-    @students.each do |student|
-      student_data = [student[:name], student[:cohort],student[:gender], student[:birth_place]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
-    end
-    file.close
+    CSV.open(filename, "wb") do |csvhandle|  
+      # iterate over the array of students
+      @students.each do |student|
+        student_data = [student[:name], student[:cohort],student[:gender], student[:birth_place]]
+        csvhandle << student_data
+      end # each
+    end #file block no explicit close needed
     @success = true
-  end
+  end #if
 end
 def load_students(filename = "students.csv")
   puts "Enter a file to open"
@@ -275,14 +275,13 @@ def load_students(filename = "students.csv")
     @success = false
     return
    else # file exist and can be opened
-    file = File.open(non_default, "r")
-    file.readlines.each do |line|
-      name, cohort, gender,birth_place = line.chomp.split(',')
-      @students << {name: name, cohort: cohort.to_sym, gender: gender, birth_place: birth_place}
+    CSV.foreach(non_default) do |row|  
+         name = row[0]
+         cohort = row[1]
+        @students << {name: name, cohort: cohort.to_sym} #only load these items no need for others
     end
-    file.close
-    @success = true
-  end  
+   end 
+  @success = true
 end
 def load_students_default(filename = "students.csv")
   stud_file  = file_exists(filename)
@@ -290,12 +289,12 @@ def load_students_default(filename = "students.csv")
     puts"default load failed"
     exit
   end  
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+  CSV.foreach("students.csv") do |row| 
+      name = row[0]
+      cohort = row[1]
+      @students << {name: name, cohort: cohort.to_sym}
   end
-  file.close
+  @success = true
 end
 
 def try_load_students
